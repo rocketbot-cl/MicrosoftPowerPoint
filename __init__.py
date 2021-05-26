@@ -75,7 +75,6 @@ if module == "new":
     try:
         ms_pp = win32com.client.Dispatch("Powerpoint.Application")
         powerpoint = ms_pp.Presentations.Add()
-        ms_pp.Visible = True
     except Exception as e:
         print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
         PrintException()
@@ -114,7 +113,7 @@ if module == "to_pdf":
         if path:
             ms_pp = win32com.client.DispatchEx("Powerpoint.Application")
             powerpoint = ms_pp.Presentations.Open(path)
-        powerpoint.ExportAsFixedFormat(Path=to, FixedFormatType=ppFixedFormatTypePDF, IncludeDocProperties=True)
+        powerpoint.SaveAs(FileName=to, FileFormat=32)
         powerpoint.Close()
         ms_pp.Quit()
     except Exception as e:
@@ -122,42 +121,46 @@ if module == "to_pdf":
         PrintException()
         raise e
 
-if module == "write":
+if module == "textbox":
 
     text = GetParams("text")
-    type_ = GetParams("type")
-    level = GetParams("level")
     align = GetParams("align")
     size = GetParams("size")
     bold = GetParams("bold")
     italic = GetParams("italic")
     underline = GetParams("underline")
-
+    slide = GetParams("slide")
+    pixelLeft = GetParams("pixelLeft")
+    pixelTop = GetParams("pixelTop")
+    pixelWidth = GetParams("pixelWidth")
+    pixelHeight = GetParams("pixelHeight")
     try:
-        powerpoint.Paragraphs.Add()
-        paragraph = powerpoint.Paragraphs.Last
-        range_ = paragraph.Range
+        currSlide = powerpoint.Slides(int(slide))
+        textbox = currSlide.Shapes.AddTextBox(1, pixelLeft, pixelTop, pixelWidth, pixelHeight)
+        range_ = textbox.TextFrame.TextRange
+
+
         range_.Text = text
-        font = paragraph.Range.Font
+        font = range_.Font
 
         size = float(size) if size else 12
 
         font.Size = size
-        font.Bold = bool(bold)
-        font.Italic = bool(italic)
-        font.Underline = bool(underline)
+        if bold == "True":
+            boldInt = -1
+        else: boldInt = 0
+        font.Bold = boldInt
+        if italic == "True":
+            italicInt = -1
+        else: italicInt = 0
+        font.Italic = italicInt
+        if underline == "True":
+            underlineInt = -1
+        else: underlineInt = 0
+        font.Underline = underlineInt
+        range_.ParagraphFormat.Alignment = int(align) if align else 0
 
-        paragraph.Alignment = int(align) if align else 0
-        style = type_ + level
-        if style in WdBuiltinStyle:
-            paragraph.Style = WdBuiltinStyle[style]
-        elif (type_ == "number" or type_ == "bullet") and int(level) > 5:
-            level = 5
-            style = type_ + str(level)
-            paragraph.Style = WdBuiltinStyle[style]
-        else:
-            style = type_
-            paragraph.Style = WdBuiltinStyle[style]
+
     except Exception as e:
         PrintException()
         raise e
@@ -174,27 +177,37 @@ if module == "close":
         raise e
 
 if module == "new_slide":
+    slide_number = GetParams("slide_number")
     try:
-        powerpoint.Paragraphs.Add()
-        paragraph = powerpoint.Paragraphs.Last
-        paragraph.Range.InsertBreak()
+        powerpoint.Slides.Add(slide_number,12)
+        print(powerpoint.Slides.count)
     except Exception as e:
         PrintException()
         raise e
 
 if module == "add_pic":
     img_path = GetParams("img_path")
-
+    slide_number = GetParams("slide_number")
+    pixelLeft = GetParams("pixelLeft")
+    pixelTop = GetParams("pixelTop")
+    pixelWidth = GetParams("pixelWidth")
+    pixelHeight = GetParams("pixelHeight")
     try:
-        # Only work with \
         img_path = img_path.replace("/", os.sep)
-
-        count = powerpoint.Paragraphs.Count  # Count number paragraphs
-        if count > 1:
-            powerpoint.Paragraphs.Add()
-
-        paragraph = powerpoint.Paragraphs.Last
-        img = paragraph.Range.InlineShapes.AddPicture(FileName=img_path, LinkToFile=False, SaveWithDocument=True)
+        if pixelWidth and pixelHeight:
+            img = powerpoint.Slides(int(slide_number)).Shapes.AddPicture(FileName=img_path, LinkToFile=False, SaveWithDocument=True, Left=pixelLeft, Top=pixelTop, Width=pixelWidth, Height=pixelHeight)
+        elif pixelWidth:
+            img = powerpoint.Slides(int(slide_number)).Shapes.AddPicture(FileName=img_path, LinkToFile=False,
+                                                                   SaveWithDocument=True, Left=pixelLeft,
+                                                                   Top=pixelTop, Width=pixelWidth)
+        elif pixelHeight:
+            img = powerpoint.Slides(int(slide_number)).Shapes.AddPicture(FileName=img_path, LinkToFile=False,
+                                                                   SaveWithDocument=True, Left=pixelLeft,
+                                                                   Top=pixelTop, Height=pixelHeight)
+        else:
+            img = powerpoint.Slides(int(slide_number)).Shapes.AddPicture(FileName=img_path, LinkToFile=False,
+                                                                   SaveWithDocument=True, Left=pixelLeft,
+                                                                   Top=pixelTop)
         print(img)
     except Exception as e:
         print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
@@ -215,6 +228,69 @@ if module == "search_text":
             count += 1
         SetVar(whichParagraph, paragraphList)
         print(paragraphList)
+    except Exception as e:
+        print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
+        PrintException()
+        raise e
+
+if module == "adjust":
+    slide_number = GetParams("slide_number")
+    numShape = GetParams("numShape")
+    text = GetParams("text")
+    rotation = GetParams("rotation")
+    pixelLeft = GetParams("pixelLeft")
+    pixelTop = GetParams("pixelTop")
+    pixelWidth = GetParams("pixelWidth")
+    pixelHeight = GetParams("pixelHeight")
+
+    try:
+        if text:
+            powerpoint.Slides(int(slide_number)).Shapes(int(numShape)).TextFrame.TextRange.Text = text
+
+        if rotation:
+            powerpoint.Slides(int(slide_number)).Shapes(int(numShape)).Rotation = rotation
+
+        if pixelLeft:
+            powerpoint.Slides(int(slide_number)).Shapes(int(numShape)).Left(pixelLeft)
+
+        if pixelTop:
+            powerpoint.Slides(int(slide_number)).Shapes(int(numShape)).Top(pixelTop)
+
+        if pixelWidth:
+            powerpoint.Slides(int(slide_number)).Shapes(int(numShape)).Width(pixelWidth)
+
+        if pixelHeight:
+            powerpoint.Slides(int(slide_number)).Shapes(int(numShape)).Height(pixelHeight)
+
+    except Exception as e:
+        print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
+        PrintException()
+        raise e
+
+if module == "add_shape":
+    shape = GetParams("shape")
+    slide_number = GetParams("slide_number")
+    pixelLeft = GetParams("pixelLeft")
+    pixelTop = GetParams("pixelTop")
+    pixelWidth = GetParams("pixelWidth")
+    pixelHeight = GetParams("pixelHeight")
+    medialink = GetParams("medialink")
+    numRows = GetParams("numRows")
+    numCols = GetParams("numCols")
+    text = GetParams("text")
+
+    try:
+        if shape == "label":
+            powerpoint.Slides(int(slide_number)).Shapes.AddLabel(1,Left=pixelLeft,Top=pixelTop,Width=pixelWidth,Height=pixelHeight).TextFrame.TextRange.Text = text
+        if shape == "table":
+            powerpoint.Slides(int(slide_number)).Shapes.AddTable(numRows,numCols,Left=pixelLeft,Top=pixelTop,Width=pixelWidth,Height=pixelHeight)
+        if shape == "title":
+            if not powerpoint.Slides(int(slide_number)).Shapes.HasTitle:
+                title = powerpoint.Slides(int(slide_number)).Shapes.AddTitle()
+                title.TextFrame.TextRange.Text = text
+        if shape == "media":
+            powerpoint.Slides(int(slide_number)).Shapes.AddMediaObject2(FileName=medialink, LinkToFile=False, SaveWithDocument=True ,Left=pixelLeft,Top=pixelTop,Width=pixelWidth,Height=pixelHeight)
+
     except Exception as e:
         print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
         PrintException()
