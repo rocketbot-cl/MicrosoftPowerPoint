@@ -275,21 +275,60 @@ if module == "add_shape":
     pixelWidth = GetParams("pixelWidth")
     pixelHeight = GetParams("pixelHeight")
     medialink = GetParams("medialink")
-    numRows = GetParams("numRows")
-    numCols = GetParams("numCols")
     text = GetParams("text")
-
+    argv1 = {"Left": pixelLeft,
+             "Top": pixelTop,
+             "Width": pixelWidth,
+             "Height": pixelHeight
+             }
+    argv2 = {key: value for key, value in argv1.items() if value}
     try:
         if shape == "label":
             powerpoint.Slides(int(slide_number)).Shapes.AddLabel(1,Left=pixelLeft,Top=pixelTop,Width=pixelWidth,Height=pixelHeight).TextFrame.TextRange.Text = text
-        if shape == "table":
-            powerpoint.Slides(int(slide_number)).Shapes.AddTable(numRows,numCols,Left=pixelLeft,Top=pixelTop,Width=pixelWidth,Height=pixelHeight)
         if shape == "title":
             if not powerpoint.Slides(int(slide_number)).Shapes.HasTitle:
                 title = powerpoint.Slides(int(slide_number)).Shapes.AddTitle()
                 title.TextFrame.TextRange.Text = text
         if shape == "media":
-            powerpoint.Slides(int(slide_number)).Shapes.AddMediaObject2(FileName=medialink, LinkToFile=False, SaveWithDocument=True ,Left=pixelLeft,Top=pixelTop,Width=pixelWidth,Height=pixelHeight)
+            medialink = medialink.replace("/", os.sep)
+            powerpoint.Slides(int(slide_number)).Shapes.AddMediaObject2(FileName=medialink, LinkToFile=False, SaveWithDocument=True , **argv2)
+
+    except Exception as e:
+        print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
+        PrintException()
+        raise e
+
+if module == "add_table":
+    slide_number = GetParams("slide_number")
+    numRows = GetParams("numRows")
+    numCols = GetParams("numCols")
+    pixelLeft = GetParams("pixelLeft")
+    pixelTop = GetParams("pixelTop")
+    pixelWidth = GetParams("pixelWidth")
+    pixelHeight = GetParams("pixelHeight")
+    print(pixelTop)
+    print(type(pixelTop))
+    try:
+        argv1 = {"Left": pixelLeft,
+                 "Top": pixelTop,
+                 "Width": pixelWidth,
+                 "Height": pixelHeight
+                 }
+        argv2 = {key:value for key, value in argv1.items() if value}
+        powerpoint.Slides(int(slide_number)).Shapes.AddTable(numRows, numCols, **argv2)
+    except Exception as e:
+        print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
+        PrintException()
+        raise e
+
+if module == "write_table":
+    slide_number = GetParams("slide_number")
+    shape_index = GetParams("shape_index")
+    tblRow = GetParams("tblRow")
+    tblCol = GetParams("tblCol")
+    text = GetParams("text")
+    try:
+        powerpoint.Slides(int(slide_number)).Shapes(int(shape_index)).Table.Cell(tblRow,tblCol).Shape.TextFrame.TextRange.Text = text
 
     except Exception as e:
         print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")
