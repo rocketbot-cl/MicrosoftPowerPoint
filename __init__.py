@@ -85,7 +85,7 @@ if module == "open":
 
     try:
         ms_pp = win32com.client.DispatchEx("Powerpoint.Application")
-        powerpoint = ms_pp.Presentations.Open(path)
+        powerpoint = ms_pp.Presentations.Open(path.replace("/", os.sep))
         ms_pp.Visible = True
     except Exception as e:
         print("\x1B[" + "31;40mError\u2193\x1B[" + "0m")

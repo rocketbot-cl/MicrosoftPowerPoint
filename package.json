@@ -627,8 +627,8 @@
         "options": null
       },
       "es": {
-        "title": " ",
-        "description": " ",
+        "title": "Agregar cuadro",
+        "description": "Agrega un nuevo cuadro a la presentación",
         "title_options": null,
         "options": null
       },
@@ -642,7 +642,7 @@
               "en": "Select your object"
             },
             "title": {
-              "es": " ",
+              "es": "Cuadro",
               "en": "Shape"
             },
             "options": [
@@ -682,7 +682,7 @@
           {
             "type": "input",
             "placeholder": {
-              "es": " ",
+              "es": " Posición izquierda",
               "en": "Pixels from left"
             },
             "title": {
@@ -695,7 +695,7 @@
           {
             "type": "input",
             "placeholder": {
-              "es": " ",
+              "es": "Posición superior",
               "en": "Pixels from top"
             },
             "title": {
@@ -708,7 +708,7 @@
           {
             "type": "input",
             "placeholder": {
-              "es": " ",
+              "es": "Ancho",
               "en": "pixel width"
             },
             "title": {
@@ -725,7 +725,7 @@
               "en": "pixel height"
             },
             "title": {
-              "es": " ",
+              "es": "Alto",
               "en": "pixel height"
             },
             "id": "pixelHeight",
@@ -751,15 +751,15 @@
           {
             "type": "file_select",
             "placeholder": {
-              "es": " ",
+              "es": "Video.mp4",
               "en": "video.mp4"
             },
             "title": {
-              "es": " ",
+              "es": "Nombre del archivo",
               "en": "File Name"
             },
             "help": {
-              "es": " ",
+              "es": "",
               "en": "use if you are adding a media"
             },
             "id": "medialink",
