@@ -149,8 +149,8 @@
         "options": null
       },
       "es": {
-        "title": "",
-        "description": "",
+        "title": "Editar Cuadro",
+        "description": "Edita un cuadro de power point, ej. Cuadro de título, o cuadro de imagen",
         "title_options": null,
         "options": null
       },
@@ -182,11 +182,11 @@
             },
             "title": {
               "en": "Shape Index",
-              "es": ""
+              "es": "Índice del cuadro"
             },
             "help": {
               "en": "Which shape do you want to adjust?",
-              "es": ""
+              "es": "Indice del cuadro que quieres editar"
             },
             "id": "numShape",
             "css": "col-md-12"
@@ -194,8 +194,8 @@
           {
             "type": "input",
             "placeholder": {
-              "es": "This will replace text already in the shape ",
-              "en": " "
+              "en": "This will replace text already in the shape ",
+              "es": "Acá modificará el texto del cuadro"
             },
             "title": {
               "es": "nuevo texto",
@@ -788,8 +788,8 @@
         "options": null
       },
       "es": {
-        "title": " ",
-        "description": " ",
+        "title": "Agregar Tabla",
+        "description": "Agrega una nueva tabla a la presentación",
         "title_options": null,
         "options": null
       },
@@ -820,7 +820,7 @@
               "en": "Ex. 4"
             },
             "title": {
-              "es": " ",
+              "es": "Número de filas",
               "en": "Number of Rows"
             },
             "help": {
@@ -837,7 +837,7 @@
               "en": "Ex. 4"
             },
             "title": {
-              "es": " ",
+              "es": "Número de columnas",
               "en": "Number of Columns"
             },
             "help": {
@@ -854,7 +854,7 @@
               "en": "Pixels from left"
             },
             "title": {
-              "es": " ",
+              "es": "Posición izquierda",
               "en": "Pixel Left"
             },
             "id": "pixelLeft",
@@ -867,7 +867,7 @@
               "en": "Pixels from top"
             },
             "title": {
-              "es": " ",
+              "es": "Posición superior",
               "en": "Pixel Top"
             },
             "id": "pixelTop",
@@ -880,7 +880,7 @@
               "en": "pixel width"
             },
             "title": {
-              "es": " ",
+              "es": "Ancho",
               "en": "pixel width"
             },
             "id": "pixelWidth",
@@ -889,7 +889,7 @@
           {
             "type": "input",
             "placeholder": {
-              "es": " ",
+              "es": "Alto",
               "en": "pixel height"
             },
             "title": {
@@ -1112,8 +1112,8 @@
         "options": null
       },
       "es": {
-        "title": " ",
-        "description": " ",
+        "title": "Escribir en Tabla",
+        "description": "Escribe dentro de una tabla",
         "title_options": null,
         "options": null
       },
@@ -1127,7 +1127,7 @@
               "en": "Ex. 1"
             },
             "title": {
-              "es": " ",
+              "es": "Diapositiva",
               "en": "Slide Number"
             },
             "id": "slide_number",
@@ -1140,7 +1140,7 @@
               "en": "Ex. 1"
             },
             "title": {
-              "es": " ",
+              "es": "Cuadro",
               "en": "Shape Index"
             },
             "id": "shape_index",
@@ -1153,7 +1153,7 @@
               "en": "Ex. 1"
             },
             "title": {
-              "es": " ",
+              "es": "Fila",
               "en": "Table Row"
             },
             "id": "tblRow",
@@ -1166,7 +1166,7 @@
               "en": "Ex. 1"
             },
             "title": {
-              "es": " ",
+              "es": "Columna",
               "en": "Table Col"
             },
             "id": "tblCol",
